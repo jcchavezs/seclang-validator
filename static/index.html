@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seclang validator</title>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("build/seclang-validator.wasm"), go.importObject).then((result) => {
+            go.run(result.instance);
+        });
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="bd-code-snippet">
+            <div id="input" class="highlight" style="min-height:100px" contentEditable="true"></div>
+        </div>
+        <div class="alert alert-primary" role="alert" id="output"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script>
+        var input = document.querySelector('#input')
+        var output = document.querySelector('#output')
+        input.addEventListener('keyup', function () {
+            output.innerHTML = validate(input.innerHTML).error
+        });
+    </script>
+</body>
+
+</html>
