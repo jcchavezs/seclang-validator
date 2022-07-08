@@ -7,6 +7,10 @@ import (
 	"github.com/corazawaf/coraza/v3/seclang"
 )
 
+var (
+	console = js.Global().Get("console")
+)
+
 func main() {
 	js.Global().Set("validate", js.FuncOf(validate))
 	// Prevent the function from returning, which is required in a wasm module
@@ -22,6 +26,8 @@ func validate(_ js.Value, args []js.Value) interface{} {
 		res["error"] = err.Error()
 		return res
 	}
+
+	console.Call("log", args[0].String())
 
 	if err := p.FromString(args[0].String()); err != nil {
 		res["error"] = err.Error()

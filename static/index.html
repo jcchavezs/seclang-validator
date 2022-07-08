@@ -17,10 +17,8 @@
 
 <body>
     <div class="container">
-        <div class="bd-code-snippet">
-            <div id="input" class="highlight" style="min-height:100px" contentEditable="true"></div>
-        </div>
-        <div class="alert alert-primary" role="alert" id="output"></div>
+        <pre id="input" style="height:80%" contentEditable="true"></pre>
+        <div class="alert alert-primary visibility-hidden" role="alert" id="output"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
@@ -29,7 +27,14 @@
         var input = document.querySelector('#input')
         var output = document.querySelector('#output')
         input.addEventListener('keyup', function () {
-            output.innerHTML = validate(input.innerHTML).error
+            result = validate(input.innerText)
+            if (input.innerText.length == 0 || result.hasOwnProperty("error")) {
+                output.innerHTML = "<strong>Error:</strong> " + result.error
+                output.className = "alert alert-danger"
+            } else {
+                output.innerHTML = "All correct!"
+                output.className = "alert alert-success"
+            }
         });
     </script>
 </body>
